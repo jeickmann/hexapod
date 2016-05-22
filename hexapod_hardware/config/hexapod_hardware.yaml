@@ -1,0 +1,61 @@
+hexapod:
+  comport: /dev/tty.usbserial-AI03GJ5C
+  hw_joints:
+    - fr_coxa_to_femur #0
+    - rl_coxa_to_femur #1
+    - rr_femur_to_tibia #2
+    - base_to_rr_coxa #3
+    - ml_coxa_to_femur #4
+    - base_to_mr_coxa #5
+    - fl_coxa_to_femur #6
+    - mr_coxa_to_femur #7
+    - base_to_fr_coxa #8
+    - base_to_fl_coxa #9
+    - rr_coxa_to_femur #10
+    - base_to_ml_coxa #11
+    - fr_femur_to_tibia #12
+    - ml_femur_to_tibia #13
+    - mr_femur_to_tibia #14
+    - fl_femur_to_tibia #15
+    - rl_femur_to_tibia #16
+    - base_to_rl_coxa #17
+  
+  hw_dirs:
+    - -1 #0
+    - 1 #1
+    - 1 #2
+    - 1 #3
+    - 1 #4
+    - 1 #5
+    - 1 #6
+    - -1 #7
+    - 1 #8
+    - -1 #9
+    - -1 #10
+    - -1 #11
+    - 1 #12
+    - -1 #13
+    - 1 #14
+    - -1 #15
+    - -1 #16
+    - -1 #17
+  
+  hw_offsets:
+    - -1.1 #0
+    - -1.2 #1 TODO: Checken wenn angeschlossen
+    - 1.1 #2
+    - 0.45 #3
+    - -1.0 #4
+    - 0.3 #5
+    - -1.05 #6
+    - -1.2 #7
+    - -0.3 #8
+    - -0.6 #9
+    - -0.8 #10
+    - 0.25 #11
+    - 1.1 #12
+    - 0.9 #13
+    - 0.9 #14
+    - 1.10 #15
+    - 1.1 #16
+    - 0.55 #17

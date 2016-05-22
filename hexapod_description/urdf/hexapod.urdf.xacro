@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="hexapod">
+
+	<gazebo>
+	  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+	    <robotNamespace>/hexapod</robotNamespace>
+      	<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+	  </plugin>
+	</gazebo>
+	
+	<xacro:property name="upper_leg_length" value=".055" />
+	<xacro:property name="lower_leg_length" value=".088" />
+
+	<material name="blue">
+		<color rgba="0 0 .8 1" />
+	</material>
+	
+	<material name="red">
+		<color rgba="0.8 0 0 1" />
+	</material>
+	
+	<material name="green">
+		<color rgba="0 0.8 0 1" />
+	</material>
+	
+	<material name="black">
+		<color rgba="0 0 0 1" />
+	</material>
+
+	<xacro:macro name="cube_inertial" params="origin_xyz mass width height depth">
+		<inertial>
+			<origin xyz="${origin_xyz}"/>
+			<mass value="${mass}" />
+			<!-- <inertia	ixx="${mass/12*(height*height+depth*depth)}" 	ixy="0.0" 	ixz="0.0" 
+									iyy="${mass/12*(width*width+depth*depth)}" 	iyz="0.0"
+												izz="${mass/12*(width*width+height*height)}" />
+											 -->
+											 
+			<inertia	ixx="1E-5" 	ixy="0.0" 	ixz="0.0" 
+									iyy="1E-5" 	iyz="0.0"
+												izz="1E-5" />
+		</inertial>
+	</xacro:macro>
+
+	<xacro:macro name="leg" params="name yoffset reflect">
+
+		<link name="${name}_coxa">
+			<collision>
+				<geometry>
+					<box size="0.004 0.01 0.01" />
+				</geometry>
+				<origin xyz="0 ${reflect*0.005} 0" />
+			</collision>
+			<visual>
+				<geometry>
+					<box size="0.004 0.01 0.01" />
+				</geometry>
+				<origin xyz="0 ${reflect*0.005} 0" />
+				
+				<material name="black"/>
+			</visual>
+			
+			<xacro:cube_inertial origin_xyz="0 ${reflect*0.005} 0" mass="0.01" width="0.004" height="0.01" depth="0.01"/>
+			
+		</link>
+		
+		<gazebo reference="${name}_coxa">
+		 	<material>Gazebo/Black</material>
+		</gazebo>
+
+		<link name="${name}_femur">
+			<collision>
+				<geometry>
+					<box size="0.004 ${upper_leg_length} 0.01" />
+				</geometry>
+				<origin xyz="0 ${reflect*upper_leg_length/2} 0" />
+			</collision>
+			<visual>
+				<geometry>
+					<box size="0.004 ${upper_leg_length} 0.01" />
+				</geometry>
+				<material name="blue"/>
+				<origin xyz="0 ${reflect*upper_leg_length/2} 0" />
+			</visual>
+			<xacro:cube_inertial origin_xyz="0 ${reflect*upper_leg_length/2} 0" mass="0.01" width="0.004" height="${upper_leg_length}" depth="0.01"/>
+		</link>
+		
+		<gazebo reference="${name}_femur">
+		 	<material>Gazebo/Black</material>
+		</gazebo>
+
+		<link name="${name}_tibia">
+			<collision>
+				<geometry>
+					<box size="0.004 ${lower_leg_length} 0.01" />
+				</geometry>
+				<origin xyz="0 ${reflect*lower_leg_length/2} 0" />
+			</collision>
+			<visual>
+				<geometry>
+					<box size="0.004 ${lower_leg_length} 0.01" />
+				</geometry>
+				<material name="red"/>
+				<origin xyz="0 ${reflect*lower_leg_length/2} 0" />
+			</visual>
+			
+			<xacro:cube_inertial origin_xyz="0 ${reflect*lower_leg_length/2} 0" mass="0.01" width="0.004" height="${lower_leg_length}" depth="0.01"/>
+		</link>
+		
+		<gazebo reference="${name}_tibia">
+			<material>Gazebo/Black</material>
+			<mu1>1</mu1>
+		  	<mu2>1</mu2>
+		  	<kp>1000</kp>
+		  	<kd>0.1</kd>
+		  	<minDepth>0.001</minDepth>
+		</gazebo>
+
+		<joint name="base_to_${name}_coxa" type="revolute">
+			<axis xyz="0 0 ${reflect*1}" />
+			<limit effort="2000" lower="-0.78" upper="0.78" velocity="0.5" />
+			<parent link="base_link" />
+			<child link="${name}_coxa" />
+			<origin xyz="${yoffset} ${reflect*0.04} 0.009" />
+			
+		</joint>
+		
+		<transmission name="base_to_${name}_coxa_transmission">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="base_to_${name}_coxa">
+				<hardwareInterface>PositionJointInterface</hardwareInterface>
+		    </joint>
+		    <actuator name="srv_base_to_${name}_coxa">
+		      <hardwareInterface>PositionJointInterface</hardwareInterface>
+		    </actuator>
+		</transmission>
+		
+		<joint name="${name}_coxa_to_femur" type="revolute">
+			<axis xyz="${reflect*1} 0 0" />
+			<limit effort="2000" lower="-0.25" upper="1.5" velocity="0.5" />
+			<parent link="${name}_coxa" />
+			<child link="${name}_femur" />
+			<origin xyz="0.004 ${reflect*0.01} 0" />
+			
+		</joint>
+		
+		<transmission name="coxa_to_${name}_femur_transmission">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="${name}_coxa_to_femur">
+				<hardwareInterface>PositionJointInterface</hardwareInterface>
+		    </joint>
+		    <actuator name="srv_${name}_coxa_to_femur">
+		      <hardwareInterface>PositionJointInterface</hardwareInterface>
+		    </actuator>
+		</transmission>
+
+		<joint name="${name}_femur_to_tibia" type="revolute">
+			<axis xyz="${reflect*1} 0 0" />
+			<limit effort="2000" lower="-2.6" upper="0.5" velocity="0.5" />
+			<parent link="${name}_femur" />
+			<child link="${name}_tibia" />
+			<origin xyz="0.004 ${reflect*upper_leg_length} 0" />
+		</joint>
+		
+		<transmission name="femur_to_${name}_tibia_transmission">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="${name}_femur_to_tibia">
+				<hardwareInterface>PositionJointInterface</hardwareInterface>
+		    </joint>
+		    <actuator name="srv_${name}_femur_to_tibia">
+		      <hardwareInterface>PositionJointInterface</hardwareInterface>
+		    </actuator>
+		</transmission>
+	</xacro:macro>
+	<!-- 
+	<link name="world"/>
+
+	<joint name="fixed" type="fixed">
+	  <parent link="world"/>
+	  <child link="base_link"/>
+	</joint>
+ -->
+	<link name="base_link">
+		<collision>
+			<geometry>
+				<box size="0.2 .08 .05" />
+			</geometry>
+		</collision>
+		<visual>
+			<geometry>
+				<box size="0.2 .08 .05" />
+			</geometry>
+		</visual>
+		<material name="green"/>
+	</link>
+	
+	<gazebo reference="base_link">
+	  	<material>Gazebo/Green</material>
+		<mu1>100</mu1>
+		<mu2>100</mu2>
+	</gazebo>
+	
+	<link name="inertial_sub">
+		<collision>
+			<geometry>
+				<box size="0.2 .08 .05" />
+			</geometry>
+		</collision>
+		<visual>
+			<geometry>
+				<box size="0.2 .08 .05" />
+			</geometry>
+		</visual>
+		<xacro:cube_inertial origin_xyz="0 0 0" mass="0.05" width="0.2" height="0.08" depth="0.05"/>
+	</link>
+	
+	<gazebo reference="inertial_sub">
+	  	<material>Gazebo/Blue</material>
+	</gazebo>
+	
+	<joint name="inertial_sub_joint" type="fixed">
+		<parent link="base_link"/>
+		<child link="inertial_sub"/>
+	</joint>
+
+	<xacro:leg name="fl" yoffset="0.1" reflect="1" />
+	<xacro:leg name="ml" yoffset="0" reflect="1" />
+	<xacro:leg name="rl" yoffset="-0.1" reflect="1" />
+
+	<xacro:leg name="fr" yoffset="0.1" reflect="-1" />
+	<xacro:leg name="mr" yoffset="0" reflect="-1" />
+	<xacro:leg name="rr" yoffset="-0.1" reflect="-1" />
+	
+</robot>

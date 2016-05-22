@@ -1,0 +1,66 @@
+hexapod:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50  
+
+  # Position Controllers ---------------------------------------
+  fl_coxa_controller:
+    type: position_controllers/JointPositionController
+    joint: base_to_fl_coxa
+  fl_femur_controller:
+    type: position_controllers/JointPositionController
+    joint: fl_coxa_to_femur
+  fl_tibia_controller:
+    type: position_controllers/JointPositionController
+    joint: fl_femur_to_tibia
+    
+  ml_coxa_controller:
+    type: position_controllers/JointPositionController
+    joint: base_to_ml_coxa
+  ml_femur_controller:
+    type: position_controllers/JointPositionController
+    joint: ml_coxa_to_femur
+  ml_tibia_controller:
+    type: position_controllers/JointPositionController
+    joint: ml_femur_to_tibia
+    
+  rl_coxa_controller:
+    type: position_controllers/JointPositionController
+    joint: base_to_rl_coxa
+  rl_femur_controller:
+    type: position_controllers/JointPositionController
+    joint: rl_coxa_to_femur
+  rl_tibia_controller:
+    type: position_controllers/JointPositionController
+    joint: rl_femur_to_tibia
+
+  fr_coxa_controller:
+    type: position_controllers/JointPositionController
+    joint: base_to_fr_coxa
+  fr_femur_controller:
+    type: position_controllers/JointPositionController
+    joint: fr_coxa_to_femur
+  fr_tibia_controller:
+    type: position_controllers/JointPositionController
+    joint: fr_femur_to_tibia
+    
+  mr_coxa_controller:
+    type: position_controllers/JointPositionController
+    joint: base_to_mr_coxa
+  mr_femur_controller:
+    type: position_controllers/JointPositionController
+    joint: mr_coxa_to_femur
+  mr_tibia_controller:
+    type: position_controllers/JointPositionController
+    joint: mr_femur_to_tibia
+    
+  rr_coxa_controller:
+    type: position_controllers/JointPositionController
+    joint: base_to_rr_coxa
+  rr_femur_controller:
+    type: position_controllers/JointPositionController
+    joint: rr_coxa_to_femur
+  rr_tibia_controller:
+    type: position_controllers/JointPositionController
+    joint: rr_femur_to_tibia

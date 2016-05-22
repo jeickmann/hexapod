@@ -1,0 +1,8 @@
+<launch>
+
+  <param name="robot_description" command="$(find xacro)/xacro '$(find hexapod_description)/urdf/hexapod.urdf.xacro'"/>
+  <rosparam file="$(find hexapod_hardware)/config/hexapod_hardware.yaml" command="load"/>
+  
+  <node name="hexapod_hardware" ns="hexapod" pkg="hexapod_hardware" type="hexapod_hardware_node" />
+
+</launch>

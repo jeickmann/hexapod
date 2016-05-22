@@ -1,0 +1,10 @@
+<launch>
+
+  <param name="robot_description" command="$(find xacro)/xacro '$(find hexapod_description)/urdf/hexapod.urdf.xacro'"/>
+  <param name="hexapod/femur_length" value="0.055"/>
+  <param name="hexapod/tibia_length" value="0.088"/>
+  <param name="hexapod/coxa_height" value="0.034"/>
+  
+  <node name="hexapod_gait_controller" ns="hexapod" pkg="hexapod_gait_controller" type="hexapod_gait_controller_node" />
+
+</launch>
