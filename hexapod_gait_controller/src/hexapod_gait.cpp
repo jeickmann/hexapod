@@ -21,32 +21,32 @@ Hexapod_Gait::Hexapod_Gait(ros::NodeHandle & n) :
 	stepLength(0.04),
 	walkingSpread(0.08),
 	walkingHeight(0.03),
-	outerLegOffset(0.02)
+	outerLegOffset(0.03)
 {
 	KDL::Vector pep(-stepLength/2, walkingSpread, -walkingHeight);
 	KDL::Vector aep(stepLength/2, walkingSpread, -walkingHeight);
-	fl.setAEP(aep + KDL::Vector(outerLegOffset, 0, 0));
-	fl.setPEP(pep + KDL::Vector(outerLegOffset, 0, 0));
+	fl.setAEP(aep - KDL::Vector(outerLegOffset, 0, 0));
+	fl.setPEP(pep - KDL::Vector(outerLegOffset, 0, 0));
 	fl.isStance = true;
 
 	ml.setAEP(aep);
 	ml.setPEP(pep);
 	ml.isStance = false;
 
-	rl.setAEP(aep - KDL::Vector(outerLegOffset, 0, 0));
-	rl.setPEP(pep - KDL::Vector(outerLegOffset, 0, 0));
+	rl.setAEP(aep + KDL::Vector(outerLegOffset, 0, 0));
+	rl.setPEP(pep + KDL::Vector(outerLegOffset, 0, 0));
 	rl.isStance = true;
 
-	fr.setAEP(aep + KDL::Vector(outerLegOffset, 0, 0));
-	fr.setPEP(pep + KDL::Vector(outerLegOffset, 0, 0));
+	fr.setAEP(aep - KDL::Vector(outerLegOffset, 0, 0));
+	fr.setPEP(pep - KDL::Vector(outerLegOffset, 0, 0));
 	fr.isStance = false;
 
 	mr.setAEP(aep);
 	mr.setPEP(pep);
 	mr.isStance = true;
 
-	rr.setAEP(aep - KDL::Vector(outerLegOffset, 0, 0));
-	rr.setPEP(pep - KDL::Vector(outerLegOffset, 0, 0));
+	rr.setAEP(aep + KDL::Vector(outerLegOffset, 0, 0));
+	rr.setPEP(pep + KDL::Vector(outerLegOffset, 0, 0));
 	rr.isStance = false;
 }
 

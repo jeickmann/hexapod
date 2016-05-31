@@ -194,11 +194,39 @@
 		<material name="green"/>
 	</link>
 	
+	<link name="front_marker">
+		<collision>
+			<geometry>
+				<box size="0.05 .05 .05" />
+			</geometry>
+			<origin xyz="-0.025 0 0" />
+		</collision>
+		<visual>
+			<geometry>
+				<box size="0.025 .025 .025" />
+			</geometry>
+			<origin xyz="-0.0125 0 0" />
+		</visual>
+		<material name="black"/>
+	</link>
+	
 	<gazebo reference="base_link">
 	  	<material>Gazebo/Green</material>
 		<mu1>100</mu1>
 		<mu2>100</mu2>
 	</gazebo>
+	
+	<gazebo reference="front_marker">
+	  	<material>Gazebo/Black</material>
+		<mu1>100</mu1>
+		<mu2>100</mu2>
+	</gazebo>
+	
+	<joint name="front_marker_joint" type="fixed">
+		<parent link="base_link"/>
+		<child link="front_marker"/>
+		<origin xyz="0.2 0 0"/>
+	</joint>
 	
 	<link name="inertial_sub">
 		<collision>
