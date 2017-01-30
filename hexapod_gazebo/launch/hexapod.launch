@@ -5,6 +5,8 @@
     <arg name="paused" value="true"/>
     <!-- more default parameters can be changed here -->
   </include>
+
+  <include file="$(find hexapod_control)/launch/hexapod_control.launch"/>
   
   <param name="robot_description" command="$(find xacro)/xacro '$(find hexapod_description)/urdf/hexapod.urdf.xacro'"/>
   

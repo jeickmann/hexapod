@@ -8,7 +8,7 @@
 	  </plugin>
 	</gazebo>
 	
-	<xacro:property name="upper_leg_length" value=".055" />
+	<xacro:property name="upper_leg_length" value=".053" />
 	<xacro:property name="lower_leg_length" value=".088" />
 
 	<material name="blue">
@@ -36,9 +36,9 @@
 												izz="${mass/12*(width*width+height*height)}" />
 											 -->
 											 
-			<inertia	ixx="1E-5" 	ixy="0.0" 	ixz="0.0" 
-									iyy="1E-5" 	iyz="0.0"
-												izz="1E-5" />
+			<inertia	ixx="1E-3" 	ixy="0.0" 	ixz="0.0" 
+									iyy="1E-3" 	iyz="0.0"
+												izz="1E-3" />
 		</inertial>
 	</xacro:macro>
 
@@ -47,20 +47,20 @@
 		<link name="${name}_coxa">
 			<collision>
 				<geometry>
-					<box size="0.004 0.01 0.01" />
+					<box size="0.004 0.012 0.004" />
 				</geometry>
 				<origin xyz="0 ${reflect*0.005} 0" />
 			</collision>
 			<visual>
 				<geometry>
-					<box size="0.004 0.01 0.01" />
+					<box size="0.004 0.012 0.004" />
 				</geometry>
 				<origin xyz="0 ${reflect*0.005} 0" />
 				
 				<material name="black"/>
 			</visual>
 			
-			<xacro:cube_inertial origin_xyz="0 ${reflect*0.005} 0" mass="0.01" width="0.004" height="0.01" depth="0.01"/>
+			<xacro:cube_inertial origin_xyz="0 ${reflect*0.005} 0" mass="0.025" width="0.004" height="0.01" depth="0.01"/>
 			
 		</link>
 		
@@ -71,18 +71,18 @@
 		<link name="${name}_femur">
 			<collision>
 				<geometry>
-					<box size="0.004 ${upper_leg_length} 0.01" />
+					<box size="0.004 ${upper_leg_length} 0.004" />
 				</geometry>
 				<origin xyz="0 ${reflect*upper_leg_length/2} 0" />
 			</collision>
 			<visual>
 				<geometry>
-					<box size="0.004 ${upper_leg_length} 0.01" />
+					<box size="0.004 ${upper_leg_length} 0.004" />
 				</geometry>
 				<material name="blue"/>
 				<origin xyz="0 ${reflect*upper_leg_length/2} 0" />
 			</visual>
-			<xacro:cube_inertial origin_xyz="0 ${reflect*upper_leg_length/2} 0" mass="0.01" width="0.004" height="${upper_leg_length}" depth="0.01"/>
+			<xacro:cube_inertial origin_xyz="0 ${reflect*upper_leg_length/2} 0" mass="0.025" width="0.004" height="${upper_leg_length}" depth="0.01"/>
 		</link>
 		
 		<gazebo reference="${name}_femur">
@@ -92,19 +92,19 @@
 		<link name="${name}_tibia">
 			<collision>
 				<geometry>
-					<box size="0.004 ${lower_leg_length} 0.01" />
+					<box size="0.004 ${lower_leg_length} 0.004" />
 				</geometry>
 				<origin xyz="0 ${reflect*lower_leg_length/2} 0" />
 			</collision>
 			<visual>
 				<geometry>
-					<box size="0.004 ${lower_leg_length} 0.01" />
+					<box size="0.004 ${lower_leg_length} 0.004" />
 				</geometry>
 				<material name="red"/>
 				<origin xyz="0 ${reflect*lower_leg_length/2} 0" />
 			</visual>
 			
-			<xacro:cube_inertial origin_xyz="0 ${reflect*lower_leg_length/2} 0" mass="0.01" width="0.004" height="${lower_leg_length}" depth="0.01"/>
+			<xacro:cube_inertial origin_xyz="0 ${reflect*lower_leg_length/2} 0" mass="0.015" width="0.004" height="${lower_leg_length}" depth="0.01"/>
 		</link>
 		
 		<gazebo reference="${name}_tibia">
@@ -117,11 +117,12 @@
 		</gazebo>
 
 		<joint name="base_to_${name}_coxa" type="revolute">
-			<axis xyz="0 0 ${reflect*1}" />
-			<limit effort="2000" lower="-0.78" upper="0.78" velocity="0.5" />
+			<axis xyz="0 0 ${reflect*1}"/>
+			<dynamics damping=".05" friction=".05"/>
+			<limit effort="0.22" lower="-0.78" upper="0.78" velocity="10" />
 			<parent link="base_link" />
 			<child link="${name}_coxa" />
-			<origin xyz="${yoffset} ${reflect*0.04} 0.009" />
+			<origin xyz="${yoffset} ${reflect*0.0315} 0.005" />
 			
 		</joint>
 		
@@ -137,10 +138,11 @@
 		
 		<joint name="${name}_coxa_to_femur" type="revolute">
 			<axis xyz="${reflect*1} 0 0" />
-			<limit effort="2000" lower="-0.25" upper="1.5" velocity="0.5" />
+			<dynamics damping=".05" friction=".05"/>
+			<limit effort="0.22" lower="-0.25" upper="1.5" velocity="10" />
 			<parent link="${name}_coxa" />
 			<child link="${name}_femur" />
-			<origin xyz="0.004 ${reflect*0.01} 0" />
+			<origin xyz="0.004 ${reflect*0.012} 0" />
 			
 		</joint>
 		
@@ -156,10 +158,11 @@
 
 		<joint name="${name}_femur_to_tibia" type="revolute">
 			<axis xyz="${reflect*1} 0 0" />
-			<limit effort="2000" lower="-2.6" upper="0.5" velocity="0.5" />
+			<dynamics damping=".05" friction=".05"/>
+			<limit effort="0.22" lower="-2.6" upper="0.5" velocity="10" />
 			<parent link="${name}_femur" />
 			<child link="${name}_tibia" />
-			<origin xyz="0.004 ${reflect*upper_leg_length} 0" />
+			<origin xyz="0.000 ${reflect*upper_leg_length} 0" />
 		</joint>
 		
 		<transmission name="femur_to_${name}_tibia_transmission">
@@ -172,23 +175,16 @@
 		    </actuator>
 		</transmission>
 	</xacro:macro>
-	<!-- 
-	<link name="world"/>
 
-	<joint name="fixed" type="fixed">
-	  <parent link="world"/>
-	  <child link="base_link"/>
-	</joint>
- -->
 	<link name="base_link">
 		<collision>
 			<geometry>
-				<box size="0.2 .08 .05" />
+				<box size="0.115 .063 .05" />
 			</geometry>
 		</collision>
 		<visual>
 			<geometry>
-				<box size="0.2 .08 .05" />
+				<box size="0.115 .063 .05" />
 			</geometry>
 		</visual>
 		<material name="green"/>
@@ -197,9 +193,9 @@
 	<link name="front_marker">
 		<collision>
 			<geometry>
-				<box size="0.05 .05 .05" />
+				<box size="0.02 .02 .02" />
 			</geometry>
-			<origin xyz="-0.025 0 0" />
+			<origin xyz="-0.01 0 0" />
 		</collision>
 		<visual>
 			<geometry>
@@ -225,21 +221,21 @@
 	<joint name="front_marker_joint" type="fixed">
 		<parent link="base_link"/>
 		<child link="front_marker"/>
-		<origin xyz="0.2 0 0"/>
+		<origin xyz="0.05 0 0.025"/>
 	</joint>
 	
 	<link name="inertial_sub">
 		<collision>
 			<geometry>
-				<box size="0.2 .08 .05" />
+				<box size="0.115 .063 .05" />
 			</geometry>
 		</collision>
 		<visual>
 			<geometry>
-				<box size="0.2 .08 .05" />
+				<box size="0.115 .063 .05" />
 			</geometry>
 		</visual>
-		<xacro:cube_inertial origin_xyz="0 0 0" mass="0.05" width="0.2" height="0.08" depth="0.05"/>
+		<xacro:cube_inertial origin_xyz="0 0 0" mass="0.35" width="0.2" height="0.08" depth="0.05"/>
 	</link>
 	
 	<gazebo reference="inertial_sub">
@@ -251,12 +247,12 @@
 		<child link="inertial_sub"/>
 	</joint>
 
-	<xacro:leg name="fl" yoffset="0.1" reflect="1" />
+	<xacro:leg name="fl" yoffset="0.0575" reflect="1" />
 	<xacro:leg name="ml" yoffset="0" reflect="1" />
-	<xacro:leg name="rl" yoffset="-0.1" reflect="1" />
+	<xacro:leg name="rl" yoffset="-0.0575" reflect="1" />
 
-	<xacro:leg name="fr" yoffset="0.1" reflect="-1" />
+	<xacro:leg name="fr" yoffset="0.0575" reflect="-1" />
 	<xacro:leg name="mr" yoffset="0" reflect="-1" />
-	<xacro:leg name="rr" yoffset="-0.1" reflect="-1" />
+	<xacro:leg name="rr" yoffset="-0.0575" reflect="-1" />
 	
 </robot>

@@ -7,17 +7,22 @@
     <include>
       <uri>model://sun</uri>
     </include>
-    <include>
+		<include>
       <uri>model://gas_station</uri>
       <name>gas_station</name>
       <pose>-2.0 7.0 0 0 0 0</pose>
-    </include>
+	</include>
+    
+     <scene>
+     	<shadows>0</shadows>
+     </scene>
      
     <physics type="ode">
 	  <gravity>0 0 -9.8</gravity>
-	  <max_step_size>0.004</max_step_size>
+	  <max_step_size>0.008</max_step_size>
 	  <real_time_factor>1</real_time_factor>
 	  <real_time_update_rate>250</real_time_update_rate>
+	  
 	  <ode>
 	  	<solver>
 			<type>quick</type>
@@ -32,8 +37,6 @@
 			<contact_surface_layer>0.001</contact_surface_layer>
 		</constraints>
 	  </ode>
-	  
-	  
 	</physics>
 	
   </world>
