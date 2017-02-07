@@ -119,7 +119,7 @@
 		<joint name="base_to_${name}_coxa" type="revolute">
 			<axis xyz="0 0 ${reflect*1}"/>
 			<dynamics damping=".05" friction=".05"/>
-			<limit effort="0.22" lower="-0.78" upper="0.78" velocity="10" />
+			<limit effort="0.35" lower="-0.78" upper="0.78" velocity="10" />
 			<parent link="base_link" />
 			<child link="${name}_coxa" />
 			<origin xyz="${yoffset} ${reflect*0.0315} 0.005" />
@@ -139,7 +139,7 @@
 		<joint name="${name}_coxa_to_femur" type="revolute">
 			<axis xyz="${reflect*1} 0 0" />
 			<dynamics damping=".05" friction=".05"/>
-			<limit effort="0.22" lower="-0.25" upper="1.5" velocity="10" />
+			<limit effort="0.35" lower="-0.25" upper="2.5" velocity="10" />
 			<parent link="${name}_coxa" />
 			<child link="${name}_femur" />
 			<origin xyz="0.004 ${reflect*0.012} 0" />
@@ -159,7 +159,7 @@
 		<joint name="${name}_femur_to_tibia" type="revolute">
 			<axis xyz="${reflect*1} 0 0" />
 			<dynamics damping=".05" friction=".05"/>
-			<limit effort="0.22" lower="-2.6" upper="0.5" velocity="10" />
+			<limit effort="0.35" lower="-2.6" upper="0.5" velocity="10" />
 			<parent link="${name}_femur" />
 			<child link="${name}_tibia" />
 			<origin xyz="0.000 ${reflect*upper_leg_length} 0" />

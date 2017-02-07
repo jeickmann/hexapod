@@ -1,0 +1,3 @@
+<launch>
+  <node name="pycontroller" pkg="hexapod_pycontroller" type="pycontroller" ns="hexapod"/>
+</launch>
